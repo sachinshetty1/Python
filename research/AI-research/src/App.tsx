@@ -74,7 +74,8 @@ function sentenceFor(source: Source, query: string): string {
       score: terms.reduce((score, term) => score + (sentence.toLowerCase().includes(term) ? 1 : 0), 0),
     }))
     .sort((a, b) => b.score - a.score || a.index - b.index);
-  return ranked[0]?.sentence || text;
+  if (ranked[0]?.score) return ranked[0].sentence;
+  return text.length > 360 ? `${text.slice(0, 357).trimEnd()}...` : text;
 }
 
 function App() {
